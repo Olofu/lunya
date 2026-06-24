@@ -1,10 +1,13 @@
 <script lang="ts">
-    export let data;
+//    export let data;
+    
 
     // Local reactive states for manual node submission/checks
     let inputCode = "";
     let isSubmitting = false;
     let feedbackMessage = "";
+
+    let { data } = $props();
 
     async function handleManualSubmit() {
         if (!inputCode.trim()) return;
