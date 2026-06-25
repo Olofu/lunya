@@ -90,7 +90,7 @@
                     <div>
                         <label class="block text-xs uppercase font-bold text-slate-400 mb-2">State</label>
                         <input type="text" value="Sokoto State, Nigeria" disabled class="w-full bg-slate-950 border border-slate-800 rounded-lg px-4 py-2.5 text-slate-400 cursor-not-allowed" />
-                        <input type="hidden" name="state" value="Sokoto" />
+                        <input type="hidden" name="stated" value="Sokoto" />
                     </div>
                     <div>
                         <label class="block text-xs uppercase font-bold text-slate-400 mb-2">LGA</label>

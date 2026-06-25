@@ -16,7 +16,7 @@ export const actions: Actions = {
             designation: formData.get('designation'),
             rank: formData.get('rank'),
             department: formData.get('department'),
-            state: 'Sokoto',
+            state:  formData.get('stated'),
             lga: formData.get('lga'),
             town: wardValue, 
             ward: wardValue,
@@ -31,7 +31,7 @@ export const actions: Actions = {
             });
 
             const data = await res.json();
-
+alert(data);
             if (!res.ok) {
                 return fail(res.status, { success: false, message: data.message || 'Provisioning failed.' });
             }
