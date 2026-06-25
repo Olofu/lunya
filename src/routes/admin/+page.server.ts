@@ -4,26 +4,27 @@ import { fail } from '@sveltejs/kit';
 const API_BASE_URL = 'https://api.megaflips.com/api/v1';
 
 export const actions: Actions = {
+
     createChw: async ({ request, fetch }) => {
         const formData = await request.formData();
-       // const wardValue = formData.get('ward')?.toString() || '';
-
-        // 💡 REMOVED 'userid' because the backend generates it now
+        
+        // Map form fields to your backend structure
         const chwPayload = {
-            first_name: formData.get('first_name'),
-            last_name: formData.get('last_name'),
-            middle_name: formData.get('middle_name'),
-            designation: formData.get('designation'),
-            rank: formData.get('rank'),
-            department: formData.get('department'),
-            state:  formData.get('stated'),
-            lga: formData.get('lga'),
-             town: formData.get('town'),
-            ward: formData.get('ward'),
-            hospital: formData.get('hospital'),
+            first_name: formData.get('first_name')?.toString() || '',
+            last_name: formData.get('last_name')?.toString() || '',
+            middle_name: formData.get('middle_name')?.toString() || null,
+            designation: formData.get('designation')?.toString() || '',
+            rank: formData.get('rank')?.toString() || '',
+            department: formData.get('department')?.toString() || '',
+            state: formData.get('stated')?.toString() || '',
+            lga: formData.get('lga')?.toString() || '',
+            town: formData.get('town')?.toString() || '',
+            ward: formData.get('ward')?.toString() || '',
+            hospital: formData.get('hospital')?.toString() || '',
+            userid: "" // Backend generates this
         };
 
-           try {
+        try {
             const res = await fetch(`${API_BASE_URL}/admin/chw`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -31,28 +32,23 @@ export const actions: Actions = {
             });
 
             const data = await res.json();
-alert(data);
+
             if (!res.ok) {
-                return fail(res.status, { success: false, message: data.message || 'Provisioning failed.' });
+                return fail(res.status, { 
+                    success: false, 
+                    message: data.error || 'Provisioning failed.' 
+                });
             }
 
-            // 💡 SUCCESS: Now you can return the generated ID from the backend
             return { 
                 success: true, 
                 message: `Operator provisioned successfully. ID: ${data.userid}` 
             };
-        } catch (err: any) {
-    console.error("DEBUG: Detailed Fetch Error:", err); 
-    
-    // Check the error type
-    let errorMessage = 'Afiya core node unreachable.';
-    if (err.code === 'ENOTFOUND') errorMessage = 'DNS lookup failed: Could not resolve API domain.';
-    if (err.code === 'ECONNREFUSED') errorMessage = 'Connection refused: API server is down or blocking port.';
-    if (err.code === 'ETIMEDOUT') errorMessage = 'Request timed out: Check network connectivity/firewall.';
-
-    return fail(500, { success: false, message: errorMessage });
-}
-    },
+        } catch (err) {
+            return fail(500, { success: false, message: 'Afiya core node unreachable.' });
+        }
+    }
+,
 
     createPatient: async ({ request, fetch }) => {
         const formData = await request.formData();
