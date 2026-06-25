@@ -41,10 +41,17 @@ export const actions: Actions = {
                 success: true, 
                 message: `Operator provisioned successfully. ID: ${data.userid}` 
             };
-        } catch (err) {
-            console.error("Axum Dispatch Failure:", err);
-            return fail(500, { success: false, message: 'Core node unreachable.' });
-        }
+        } catch (err: any) {
+    console.error("DEBUG: Detailed Fetch Error:", err); 
+    
+    // Check the error type
+    let errorMessage = 'Afiya core node unreachable.';
+    if (err.code === 'ENOTFOUND') errorMessage = 'DNS lookup failed: Could not resolve API domain.';
+    if (err.code === 'ECONNREFUSED') errorMessage = 'Connection refused: API server is down or blocking port.';
+    if (err.code === 'ETIMEDOUT') errorMessage = 'Request timed out: Check network connectivity/firewall.';
+
+    return fail(500, { success: false, message: errorMessage });
+}
     },
 
     createPatient: async ({ request, fetch }) => {
