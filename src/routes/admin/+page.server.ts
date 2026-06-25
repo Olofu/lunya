@@ -1,11 +1,13 @@
 import type { Actions } from './$types';
 import { fail } from '@sveltejs/kit';
 
+// Clean out development loopback bindings and explicitly target the live Caddy secure proxy layer
+const API_BASE_URL = 'https://api.megaflips.com/api/v1';
+
 export const actions: Actions = {
-    createChw: async ({ request }) => {
+    createChw: async ({ request, fetch }) => { // 💡 Tip: Use SvelteKit's native, contextual 'fetch' argument
         const formData = await request.formData();
         
-        // Extract field mappings cleanly
         const chwPayload = {
             userid: formData.get('userid'),
             first_name: formData.get('first_name'),
@@ -22,8 +24,8 @@ export const actions: Actions = {
         };
 
         try {
-            // Forward network request payload up to your local Axum instance
-            const res = await fetch('http://127.0.0.1:8080/api/v1/admin/chw', {
+            // Forward payload securely through Caddy SSL termination line
+            const res = await fetch(`${API_BASE_URL}/admin/chw`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(chwPayload)
@@ -41,7 +43,7 @@ export const actions: Actions = {
         }
     },
 
-    createPatient: async ({ request }) => {
+    createPatient: async ({ request, fetch }) => {
         const formData = await request.formData();
         
         const patientPayload = {
@@ -56,7 +58,8 @@ export const actions: Actions = {
         };
 
         try {
-            const res = await fetch('http://127.0.0.1:8080/api/v1/admin/patient', {
+            // Forward payload securely through Caddy SSL termination line
+            const res = await fetch(`${API_BASE_URL}/admin/patient`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(patientPayload)
@@ -68,7 +71,6 @@ export const actions: Actions = {
                 return fail(res.status, { success: false, message: data.message || 'Registry creation rejected.' });
             }
 
-            // Return the generated passcode token down to the UI layout
             return { 
                 success: true, 
                 message: data.message, 
