@@ -6,24 +6,24 @@ const API_BASE_URL = 'https://api.megaflips.com/api/v1';
 export const actions: Actions = {
     createChw: async ({ request, fetch }) => {
         const formData = await request.formData();
-        const wardValue = formData.get('ward')?.toString() || '';
+       // const wardValue = formData.get('ward')?.toString() || '';
 
         // 💡 REMOVED 'userid' because the backend generates it now
         const chwPayload = {
             first_name: formData.get('first_name'),
             last_name: formData.get('last_name'),
-            middle_name: formData.get('middle_name') || null,
+            middle_name: formData.get('middle_name'),
             designation: formData.get('designation'),
             rank: formData.get('rank'),
             department: formData.get('department'),
             state:  formData.get('stated'),
             lga: formData.get('lga'),
-            town: wardValue, 
-            ward: wardValue,
+             town: formData.get('town'),
+            ward: formData.get('ward'),
             hospital: formData.get('hospital'),
         };
 
-        try {
+           try {
             const res = await fetch(`${API_BASE_URL}/admin/chw`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -68,6 +68,8 @@ alert(data);
             ward: formData.get('ward'),
         };
 
+
+        
         try {
             const res = await fetch(`${API_BASE_URL}/admin/patient`, {
                 method: 'POST',

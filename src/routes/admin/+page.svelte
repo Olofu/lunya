@@ -102,7 +102,11 @@
                         </select>
                     </div>
                     <div>
-                        <label class="block text-xs uppercase font-bold text-slate-400 mb-2">Ward / Town</label>
+                        <label class="block text-xs uppercase font-bold text-slate-400 mb-2"> Town</label>
+                        <input type="text" name="town" required class="w-full bg-slate-900 border border-slate-800 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500" />
+                    </div>
+                     <div>
+                        <label class="block text-xs uppercase font-bold text-slate-400 mb-2">Ward </label>
                         <input type="text" name="ward" required class="w-full bg-slate-900 border border-slate-800 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500" />
                     </div>
                     <div class="md:col-span-3">
