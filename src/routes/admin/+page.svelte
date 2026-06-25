@@ -7,7 +7,13 @@
     let activeTab = $state('chw');
     let isSubmitting = $state(false);
 
-    // Copy token to clipboard utility
+    const sokotoLgas = [
+        "Binji", "Bodinga", "Dange Shuni", "Gada", "Goronyo", "Gudu", "Gwadabawa", 
+        "Illela", "Kebbe", "Kware", "Rabah", "Sabon Birni", "Shagari", "Silame", 
+        "Sokoto North", "Sokoto South", "Tambuwal", "Tangaza", "Tureta", "Wamako", 
+        "Wurno", "Yabo"
+    ];
+
     function copyToken(token: string) {
         navigator.clipboard.writeText(token);
         alert('Token copied to clipboard');
@@ -23,7 +29,6 @@
     </header>
 
     <div class="max-w-6xl mx-auto p-6 lg:p-8">
-        <!-- Navigation -->
         <div class="flex border-b border-slate-800 mb-8 space-x-4">
             <button class="pb-3 text-sm font-semibold uppercase {activeTab === 'chw' ? 'text-emerald-400 border-b-2 border-emerald-400' : 'text-slate-400'}" onclick={() => activeTab = 'chw'}>
                 Provision CHW Operator
@@ -33,7 +38,6 @@
             </button>
         </div>
 
-        <!-- Feedback & Tokens -->
         {#if form?.message}
             <div class="mb-6 p-4 rounded-lg bg-slate-950 border {form.success ? 'border-emerald-500/30 text-emerald-300' : 'border-rose-500/30 text-rose-300'} text-sm">
                 {form.message}
@@ -41,14 +45,12 @@
         {/if}
 
         {#if form?.generatedToken}
-            <div class="mb-6 p-6 rounded-lg bg-emerald-950/40 border-2 border-dashed border-emerald-500 text-center cursor-pointer hover:bg-emerald-950/60 transition" 
-                 onclick={() => copyToken(form!.generatedToken!)}>
+            <div class="mb-6 p-6 rounded-lg bg-emerald-950/40 border-2 border-dashed border-emerald-500 text-center cursor-pointer hover:bg-emerald-950/60 transition" onclick={() => copyToken(form!.generatedToken!)}>
                 <span class="block text-xs uppercase tracking-widest text-emerald-400 font-bold mb-1">Generated Patient Access Passcode (Click to Copy)</span>
                 <span class="text-4xl font-mono tracking-widest font-black text-white">{form.generatedToken}</span>
             </div>
         {/if}
 
-        <!-- CHW Provisioning Tab -->
         {#if activeTab === 'chw'}
             <section class="bg-slate-950/40 border border-slate-800 rounded-xl p-6">
                 <h2 class="text-lg font-bold text-white mb-6">Create Community Health Worker Account</h2>
@@ -86,15 +88,25 @@
                         <h3 class="text-xs font-bold uppercase tracking-wider text-emerald-400 mb-4">Regional Deployment Metrics</h3>
                     </div>
                     <div>
+                        <label class="block text-xs uppercase font-bold text-slate-400 mb-2">State</label>
+                        <input type="text" value="Sokoto State, Nigeria" disabled class="w-full bg-slate-950 border border-slate-800 rounded-lg px-4 py-2.5 text-slate-400 cursor-not-allowed" />
+                        <input type="hidden" name="state" value="Sokoto" />
+                    </div>
+                    <div>
                         <label class="block text-xs uppercase font-bold text-slate-400 mb-2">LGA</label>
-                        <input type="text" name="lga" required class="w-full bg-slate-900 border border-slate-800 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500" />
+                        <select name="lga" required class="w-full bg-slate-900 border border-slate-800 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500">
+                            <option value="" disabled selected>Select LGA</option>
+                            {#each sokotoLgas as lga}
+                                <option value={lga}>{lga}</option>
+                            {/each}
+                        </select>
                     </div>
                     <div>
                         <label class="block text-xs uppercase font-bold text-slate-400 mb-2">Ward / Town</label>
                         <input type="text" name="ward" required class="w-full bg-slate-900 border border-slate-800 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500" />
                     </div>
-                    <div>
-                        <label class="block text-xs uppercase font-bold text-slate-400 mb-2">Assigned PHC Clinic</label>
+                    <div class="md:col-span-3">
+                        <label class="block text-xs uppercase font-bold text-slate-400 mb-2">Assigned PHC Clinic or Hospital</label>
                         <input type="text" name="hospital" required class="w-full bg-slate-900 border border-slate-800 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500" />
                     </div>
                     <div class="md:col-span-3 flex justify-end pt-4">
@@ -106,7 +118,6 @@
             </section>
         {/if}
 
-        <!-- Patient Registry Tab -->
         {#if activeTab === 'patients'}
             <section class="bg-slate-950/40 border border-slate-800 rounded-xl p-6">
                 <h2 class="text-lg font-bold text-white mb-6">Register Mother Record Registry</h2>
@@ -138,7 +149,12 @@
                     </div>
                     <div>
                         <label class="block text-xs uppercase font-bold text-slate-400 mb-2">LGA</label>
-                        <input type="text" name="lga" required class="w-full bg-slate-900 border border-slate-800 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500" />
+                        <select name="lga" required class="w-full bg-slate-900 border border-slate-800 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500">
+                            <option value="" disabled selected>Select LGA</option>
+                            {#each sokotoLgas as lga}
+                                <option value={lga}>{lga}</option>
+                            {/each}
+                        </select>
                     </div>
                     <div>
                         <label class="block text-xs uppercase font-bold text-slate-400 mb-2">Town / Settlement</label>
