@@ -77,6 +77,9 @@ export const actions: Actions = {
                 generatedToken: data.generated_token 
             };
         } catch (err) {
+            // THIS WILL LOG TO YOUR BROWSER TERMINAL/SERVER CONSOLE
+    console.error("DEBUG: Detailed Fetch Error:", err); 
+    
             return fail(500, { success: false, message: 'Afiya core node communication failure.' });
         }
     }
