@@ -1,45 +1,17 @@
 <script lang="ts">
-//    export let data;
-    
+    import { enhance } from '$app/forms';
+    import type { ActionData, PageData } from './$types';
 
-    // Local reactive states for manual node submission/checks
-    let inputCode = "";
-    let isSubmitting = false;
-    let feedbackMessage = "";
+    // Destructure Svelte 5 page data and form action states
+    let { data, form }: { data: PageData, form: ActionData } = $props();
 
-    let { data } = $props();
+    let inputCode = $state("");
+    let isSubmitting = $state(false);
 
-    async function handleManualSubmit() {
-        if (!inputCode.trim()) return;
-        isSubmitting = true;
-        feedbackMessage = "";
-
-        try {
-            // Drop a network hook directly to your production API engine
-            const res = await fetch(`https://api.megaflips.com/api/v1/webhook/intake`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    phone_hash: `manual_entry_${Math.random().toString(36).substring(2, 10)}`,
-                    input_digits: inputCode,
-                    symptoms: ["manual_triage_checkpoint"],
-                    epds_score: 0
-                })
-            });
-
-            if (res.ok) {
-                feedbackMessage = "Node data successfully dispatched to backend engine.";
-                inputCode = "";
-                // Note: In production, you'd trigger an invalidateAll() here to refresh data.
-            } else {
-                feedbackMessage = "Server rejected payload verification.";
-            }
-        } catch (err) {
-            feedbackMessage = "Network error: Could not reach edge api cluster.";
-        } finally {
-            isSubmitting = false;
-        }
-    }
+    // Deriving state values dynamically
+   // $: feedbackMessage = form?.message || "";
+    // FIX: Change legacy $: to Svelte 5's $derived rune
+    let feedbackMessage = $derived(form?.message || "");
 </script>
 
 <main class="min-h-screen bg-slate-950 text-slate-50 p-8 font-sans">
@@ -51,12 +23,25 @@
         <p class="text-sm text-slate-400 mt-1">Real-time localized postpartum intervention and emergency monitoring metrics.</p>
     </header>
 
-    <!-- MANUAL ENTRY CONSOLE BAR -->
     <section class="bg-slate-900 border border-slate-800 rounded-xl p-6 mb-8">
         <h2 class="text-sm font-bold uppercase tracking-wider text-slate-400 mb-3">Manual System Input Console</h2>
-        <form on:submit|preventDefault={handleManualSubmit} class="flex flex-col sm:flex-row gap-4">
+        
+        <form 
+            method="POST" 
+            action="?/intakeNode" 
+            use:enhance={() => {
+                isSubmitting = true;
+                return async ({ update }) => {
+                    await update();
+                    isSubmitting = false;
+                    if (form?.success) inputCode = ""; // Clear on success
+                };
+            }} 
+            class="flex flex-col sm:flex-row gap-4"
+        >
             <input 
                 type="text" 
+                name="inputDigits"
                 bind:value={inputCode} 
                 placeholder="Enter patient triage digits or diagnostic encounter token..." 
                 disabled={isSubmitting}
@@ -70,12 +55,12 @@
                 {isSubmitting ? "Processing..." : "Process Code"}
             </button>
         </form>
+        
         {#if feedbackMessage}
             <p class="text-xs text-orange-400 mt-3 font-medium animate-fade-in">{feedbackMessage}</p>
         {/if}
     </section>
 
-    <!-- METRICS GRID -->
     <section class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
         <div class="bg-slate-900 border border-slate-800 rounded-xl p-6">
             <h3 class="text-xs font-semibold uppercase tracking-wider text-slate-400">Target Scaling Threshold</h3>
@@ -84,12 +69,11 @@
         </div>
         <div class="bg-slate-900 border border-slate-800 rounded-xl p-6">
             <h3 class="text-xs font-semibold uppercase tracking-wider text-slate-400">Monitored Base Nodes</h3>
-            <p class="text-4xl font-extrabold text-white mt-2">{data.encounters.length}</p>
+            <p class="text-4xl font-extrabold text-white mt-2">{data?.encounters?.length ?? 0}</p>
             <span class="text-xs text-slate-500 block mt-1">Active sync connections verified</span>
         </div>
     </section>
 
-    <!-- DATA QUEUE TABLE -->
     <section class="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden">
         <div class="p-6 border-b border-slate-800">
             <h2 class="text-lg font-bold">Active High-Risk Triage Queue</h2>
@@ -105,16 +89,16 @@
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-800 text-sm">
-                    {#each data.encounters as item}
+                    {#each data?.encounters ?? [] as item}
                         <tr class="hover:bg-slate-850 transition-colors">
-                            <td class="p-4 font-mono text-xs text-slate-300">{item.phone_hash.substring(0, 16)}...</td>
+                            <td class="p-4 font-mono text-xs text-slate-300">{item.phone_hash ? item.phone_hash.substring(0, 16) : 'N/A'}...</td>
                             <td class="p-4">
                                 <span class="px-2.5 py-1 rounded-full text-xs font-bold bg-red-950 text-red-400 border border-red-800">
-                                    {item.computed_risk}
+                                    {item.computed_risk ?? '0%'}
                                 </span>
                             </td>
-                            <td class="p-4 font-semibold">{item.epds_score} / 30</td>
-                            <td class="p-4 text-slate-400">{new Date(item.logged_at).toLocaleString()}</td>
+                            <td class="p-4 font-semibold">{item.epds_score ?? 0} / 30</td>
+                            <td class="p-4 text-slate-400">{item.logged_at ? new Date(item.logged_at).toLocaleString() : 'Pending'}</td>
                         </tr>
                     {:else}
                         <tr>
