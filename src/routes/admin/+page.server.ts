@@ -1,13 +1,14 @@
 import type { Actions } from './$types';
 import { fail } from '@sveltejs/kit';
 
-// Clean out development loopback bindings and explicitly target the live Caddy secure proxy layer
 const API_BASE_URL = 'https://api.megaflips.com/api/v1';
 
 export const actions: Actions = {
-    createChw: async ({ request, fetch }) => { // 💡 Tip: Use SvelteKit's native, contextual 'fetch' argument
+    createChw: async ({ request, fetch }) => {
         const formData = await request.formData();
         
+        const wardValue = formData.get('ward')?.toString() || '';
+
         const chwPayload = {
             userid: formData.get('userid'),
             first_name: formData.get('first_name'),
@@ -18,13 +19,12 @@ export const actions: Actions = {
             department: formData.get('department'),
             state: 'Sokoto',
             lga: formData.get('lga'),
-            town: formData.get('town'),
-            ward: formData.get('ward'),
+            town: wardValue, // 💡 Natively fallback town to the ward entry if standalone missing
+            ward: wardValue,
             hospital: formData.get('hospital'),
         };
 
         try {
-            // Forward payload securely through Caddy SSL termination line
             const res = await fetch(`${API_BASE_URL}/admin/chw`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -39,6 +39,7 @@ export const actions: Actions = {
 
             return { success: true, message: data.message };
         } catch (err) {
+            console.error("Axum Dispatch Failure:", err);
             return fail(500, { success: false, message: 'Afiya core node communication failure.' });
         }
     },
@@ -58,7 +59,6 @@ export const actions: Actions = {
         };
 
         try {
-            // Forward payload securely through Caddy SSL termination line
             const res = await fetch(`${API_BASE_URL}/admin/patient`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },

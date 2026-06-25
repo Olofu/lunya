@@ -1,15 +1,11 @@
 <script lang="ts">
     import { enhance } from '$app/forms';
+    import type { ActionData, PageData } from './$types';
 
-  import type { ActionData, PageData } from './$types';
-
-    // ✓ Correct: Destructure form (and data if you need it) out of the $props() rune
     let { form, data }: { form: ActionData, data: PageData } = $props();
 
-  
-
-    let activeTab = 'chw';
-    let isSubmitting = false;
+    let activeTab = $state('chw'); // 💡 Explicit state rune for reactive management
+    let isSubmitting = $state(false);
 </script>
 
 <main class="min-h-screen bg-slate-900 text-slate-100 font-sans antialiased">
@@ -22,10 +18,10 @@
 
     <div class="max-w-6xl mx-auto p-6 lg:p-8">
         <div class="flex border-b border-slate-800 mb-8 space-x-4">
-            <button class="pb-3 text-sm font-semibold uppercase {activeTab === 'chw' ? 'text-emerald-400 border-b-2 border-emerald-400' : 'text-slate-400'}" on:click={() => activeTab = 'chw'}>
+            <button class="pb-3 text-sm font-semibold uppercase {activeTab === 'chw' ? 'text-emerald-400 border-b-2 border-emerald-400' : 'text-slate-400'}" onclick={() => activeTab = 'chw'}>
                 Provision CHW Operator
             </button>
-            <button class="pb-3 text-sm font-semibold uppercase {activeTab === 'patients' ? 'text-emerald-400 border-b-2 border-emerald-400' : 'text-slate-400'}" on:click={() => activeTab = 'patients'}>
+            <button class="pb-3 text-sm font-semibold uppercase {activeTab === 'patients' ? 'text-emerald-400 border-b-2 border-emerald-400' : 'text-slate-400'}" onclick={() => activeTab = 'patients'}>
                 Register Mother Registry
             </button>
         </div>
@@ -52,7 +48,7 @@
                     isSubmitting = true;
                     return async ({ update }) => {
                         isSubmitting = false;
-                        await update({ reset: true }); // Clear form fields automatically on success
+                        await update({ reset: true });
                     };
                 }} class="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <div>
