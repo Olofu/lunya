@@ -45,9 +45,6 @@
 
     <!-- Footer Simple -->
     <footer class="p-8 text-center text-slate-500 bg-slate-50 text-sm">
-        &copy; 2026 Afiya-Lunya Initiative. Built for safe, data-driven maternal health. no
+        &copy; 2026 Afiya-Lunya Initiative. Built for safe, data-driven maternal health.
     </footer>
-
-
 </div>
-
