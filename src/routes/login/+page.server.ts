@@ -1,7 +1,7 @@
 import { fail, redirect } from '@sveltejs/kit';
 import type { Actions } from './$types';
 
-const API_BASE_URL = 'https://api.megaflips.com/api/v1'; 
+const API_BASE_URL = 'https://127.0.0.1:8080/api/v1'; 
 
 export const actions: Actions = {
     login: async ({ request, cookies, fetch }) => {
