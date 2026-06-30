@@ -1,6 +1,14 @@
 <script lang="ts">
-    // Only keep UI-related logic here
+    // Receive the data returned from +layout.server.ts
     let { data, children } = $props();
 </script>
 
-{@render children()}
+{#if data.role}
+    <nav>
+        <p>Logged in as: {data.role}</p>
+    </nav>
+{/if}
+
+<main>
+    {@render children()}
+</main>
