@@ -1,11 +1,29 @@
 <script lang="ts">
-    // Receive the data returned from +layout.server.ts
+    import './layout.css';
+    import favicon from '$lib/assets/favicon.svg';
+
+    // Data comes from the +layout.server.ts load function
     let { data, children } = $props();
+    const { role } = data;
 </script>
 
-{#if data.role}
-    <nav>
-        <p>Logged in as: {data.role}</p>
+<svelte:head>
+    <link rel="icon" href={favicon} />
+</svelte:head>
+
+{#if role}
+    <nav class="flex gap-6 p-4 bg-slate-900 border-b border-slate-800 text-sm">
+        <span class="text-slate-500 mr-auto">Role: {role.toUpperCase()}</span>
+        
+        {#if role === 'admin'}
+            <a href="/admin/dashboard" class="text-emerald-400">Dashboard</a>
+        {:else if role === 'chw'}
+            <a href="/chw/register" class="text-emerald-400">Register Mother</a>
+        {/if}
+        
+        <form method="POST" action="/login?/logout">
+            <button class="text-rose-400">Logout</button>
+        </form>
     </nav>
 {/if}
 
