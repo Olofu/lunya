@@ -47,7 +47,17 @@ export const actions: Actions = {
             });
 
             // Instead of throwing here, set redirect target
-            redirectTarget = body.role === 'admin' ? '/admin/dashboard' : '/chw/register';
+           // redirectTarget = body.role === 'admin' ? '/admin/dashboard' : '/chw/register';
+
+           // Instead of throwing here, set redirect target
+if (body.role === 'admin') {
+    redirectTarget = '/admin/dashboard';
+} else if (body.role === 'chew') {
+    redirectTarget = '/chw/register';
+} else {
+    // fallback for other roles
+    redirectTarget = '/';
+}
 
         } catch (err) {
             console.error('Auth error:', err);
