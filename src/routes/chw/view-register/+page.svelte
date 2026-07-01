@@ -1,5 +1,6 @@
 <script lang="ts">
-    export let data;
+   let { data } = $props();
+   // export let data;
     const { mothers } = data;
 </script>
 
