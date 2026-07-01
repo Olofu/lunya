@@ -46,7 +46,7 @@ export const actions: Actions = {
             });
 
             // Redirect based on role
-        //    throw redirect(303, body.role === 'admin' ? '/admin/dashboard' : '/chw/register');
+            throw redirect(303, body.role === 'admin' ? '/admin/dashboard' : '/chw/register');
 
         } catch (err) {
             console.error('Auth error:', err);
