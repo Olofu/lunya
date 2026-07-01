@@ -1,10 +1,10 @@
 import { fail, redirect } from '@sveltejs/kit';
 import type { Actions } from './$types';
 
-//const API_BASE_URL = 'https://api.megaflips.com/api/v1';
+const API_BASE_URL = 'https://api.megaflips.com/api/v1';
 
 // Point this to your Rust backend
-const API_BASE_URL = 'http://127.0.0.1:8080/api/v1';
+//const API_BASE_URL = 'http://127.0.0.1:8080/api/v1';
 
 export const actions: Actions = {
     login: async ({ request, cookies, fetch }) => {
@@ -46,7 +46,7 @@ export const actions: Actions = {
             });
 
             // Redirect based on role
-            throw redirect(303, body.role === 'admin' ? '/admin/dashboard' : '/chw/register');
+        //    throw redirect(303, body.role === 'admin' ? '/admin/dashboard' : '/chw/register');
 
         } catch (err) {
             console.error('Auth error:', err);
