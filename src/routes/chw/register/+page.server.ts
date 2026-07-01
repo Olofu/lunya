@@ -67,7 +67,7 @@ export const actions: Actions = {
 
         
         try {
-            const res = await fetch(`${API_BASE_URL}/admin/patient`, {
+            const res = await fetch(`${API_BASE_URL}/chw/register`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(patientPayload)
