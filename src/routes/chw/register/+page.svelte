@@ -67,6 +67,12 @@
                         <input type="text" name="phone_hash" required autocomplete="off" placeholder="Enter SHA-256 Hash" class="w-full font-mono bg-slate-900 border border-slate-800 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500" />
                     </div>-->
                     <div>
+  <label class="block text-xs uppercase font-bold text-slate-400 mb-2">Language</label>
+  <input type="text" name="language" placeholder="Enter preferred language"
+    class="w-full bg-slate-900 border border-slate-800 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500" />
+</div>
+
+                    <div>
   <label class="block text-xs uppercase font-bold text-slate-400 mb-2">Phone</label>
   <input type="tel" name="phone" required autocomplete="off" placeholder="Enter phone number"
     class="w-full font-mono bg-slate-900 border border-slate-800 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500" />

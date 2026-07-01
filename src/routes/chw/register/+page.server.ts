@@ -18,6 +18,7 @@ export const actions: Actions = {
       age: parseInt(formData.get('age') as string, 10),
       photo: formData.get('photo') || null,
       state: 'Sokoto',
+      language: formData.get('language') || null, 
       lga: formData.get('lga'),
       town: formData.get('town'),
       ward: formData.get('ward'),
