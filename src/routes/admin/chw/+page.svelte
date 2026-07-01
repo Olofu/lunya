@@ -51,10 +51,92 @@
             </div>
         {/if}
 
-     <!--   {#if activeTab === 'chw'} -->
+    
             <section class="bg-slate-950/40 border border-slate-800 rounded-xl p-6">
                 <h2 class="text-lg font-bold text-white mb-6">Create Community Health Worker Account</h2>
-                <form method="POST" action="?/createChw" use:enhance={() => {
+<form method="POST" action="?/createChw" use:enhance={() => {
+    isSubmitting = true;
+    return async ({ update }) => {
+        isSubmitting = false;
+        await update({ reset: true });
+    };
+}} class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+    <!-- Identity -->
+    <div>
+        <label class="block text-xs uppercase font-bold text-slate-400 mb-2">First Name</label>
+        <input type="text" name="first_name" required class="w-full bg-slate-900 border border-slate-800 rounded-lg px-4 py-2.5 text-white" />
+    </div>
+    <div>
+        <label class="block text-xs uppercase font-bold text-slate-400 mb-2">Last Name</label>
+        <input type="text" name="last_name" required class="w-full bg-slate-900 border border-slate-800 rounded-lg px-4 py-2.5 text-white" />
+    </div>
+    <div>
+        <label class="block text-xs uppercase font-bold text-slate-400 mb-2">Middle Name</label>
+        <input type="text" name="middle_name" class="w-full bg-slate-900 border border-slate-800 rounded-lg px-4 py-2.5 text-white" />
+    </div>
+
+    <!-- Professional -->
+    <div>
+        <label class="block text-xs uppercase font-bold text-slate-400 mb-2">Designation</label>
+        <select name="designation" class="w-full bg-slate-900 border border-slate-800 rounded-lg px-4 py-2.5 text-white">
+            <option value="CHEW">CHEW Officer</option>
+            <option value="Midwife">Registered Midwife</option>
+        </select>
+    </div>
+    <div>
+        <label class="block text-xs uppercase font-bold text-slate-400 mb-2">Rank</label>
+        <input type="text" name="rank" value="Senior" class="w-full bg-slate-900 border border-slate-800 rounded-lg px-4 py-2.5 text-white" />
+    </div>
+    <div>
+        <label class="block text-xs uppercase font-bold text-slate-400 mb-2">Department</label>
+        <input type="text" name="department" required class="w-full bg-slate-900 border border-slate-800 rounded-lg px-4 py-2.5 text-white" />
+    </div>
+
+    <!-- Location -->
+    <div>
+        <label class="block text-xs uppercase font-bold text-slate-400 mb-2">State</label>
+        <input type="text" name="state" value="Sokoto" readonly class="w-full bg-slate-950 border border-slate-800 rounded-lg px-4 py-2.5 text-slate-400" />
+    </div>
+    <div>
+        <label class="block text-xs uppercase font-bold text-slate-400 mb-2">LGA</label>
+        <select name="lga" required class="w-full bg-slate-900 border border-slate-800 rounded-lg px-4 py-2.5 text-white">
+            {#each sokotoLgas as lga}
+                <option value={lga}>{lga}</option>
+            {/each}
+        </select>
+    </div>
+    <div>
+        <label class="block text-xs uppercase font-bold text-slate-400 mb-2">Town</label>
+        <input type="text" name="town" required class="w-full bg-slate-900 border border-slate-800 rounded-lg px-4 py-2.5 text-white" />
+    </div>
+    <div>
+        <label class="block text-xs uppercase font-bold text-slate-400 mb-2">Ward</label>
+        <input type="text" name="ward" required class="w-full bg-slate-900 border border-slate-800 rounded-lg px-4 py-2.5 text-white" />
+    </div>
+
+    <!-- Facility -->
+    <div class="md:col-span-3">
+        <label class="block text-xs uppercase font-bold text-slate-400 mb-2">Assigned PHC Clinic / Facility LGA</label>
+        <input type="text" name="facility_lga" required class="w-full bg-slate-900 border border-slate-800 rounded-lg px-4 py-2.5 text-white" />
+    </div>
+
+    <!-- Contact -->
+    <div class="md:col-span-3">
+        <label class="block text-xs uppercase font-bold text-slate-400 mb-2">Contact Phone</label>
+        <input type="text" name="contact_phone" required class="w-full bg-slate-900 border border-slate-800 rounded-lg px-4 py-2.5 text-white" />
+    </div>
+
+    <!-- Submit -->
+    <div class="md:col-span-3 flex justify-end pt-4">
+        <button type="submit" disabled={isSubmitting} class="w-full md:w-auto bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-bold px-8 py-3 rounded-lg transition disabled:opacity-50">
+            {isSubmitting ? 'Registering...' : 'Provision Operator Node'}
+        </button>
+    </div>
+</form>
+
+
+<!--                <form method="POST" action="?/createChw" use:enhance={() => {
                     isSubmitting = true;
                     return async ({ update }) => {
                         isSubmitting = false;
@@ -118,63 +200,7 @@
                             {isSubmitting ? 'Registering...' : 'Provision Operator Node'}
                         </button>
                     </div>
-                </form>
+                </form>  -->
             </section>
-<!--        {/if}
-
-        {#if activeTab === 'patients'}
-            <section class="bg-slate-950/40 border border-slate-800 rounded-xl p-6">
-                <h2 class="text-lg font-bold text-white mb-6">Register Mother Record Registry</h2>
-                <form method="POST" action="?/createPatient" use:enhance={() => {
-                    isSubmitting = true;
-                    return async ({ update }) => {
-                        isSubmitting = false;
-                        await update({ reset: true });
-                    };
-                }} class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                        <label class="block text-xs uppercase font-bold text-slate-400 mb-2">Secure Phone Hash Identifier</label>
-                        <input type="text" name="phone_hash" required autocomplete="off" placeholder="Enter SHA-256 Hash" class="w-full font-mono bg-slate-900 border border-slate-800 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500" />
-                    </div>
-                    <div>
-                        <label class="block text-xs uppercase font-bold text-slate-400 mb-2">Full Name</label>
-                        <input type="text" name="full_name" required class="w-full bg-slate-900 border border-slate-800 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500" />
-                    </div>
-                    <div>
-                        <label class="block text-xs uppercase font-bold text-slate-400 mb-2">Age</label>
-                        <input type="number" name="age" min="1" max="120" required class="w-full bg-slate-900 border border-slate-800 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500" />
-                    </div>
-                    <div>
-                        <label class="block text-xs uppercase font-bold text-slate-400 mb-2">Photo Base64 URL (Optional)</label>
-                        <input type="text" name="photo" class="w-full bg-slate-900 border border-slate-800 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500 text-xs font-mono" />
-                    </div>
-                    <div class="md:col-span-2 pt-4 border-t border-slate-800">
-                        <h3 class="text-xs font-bold uppercase tracking-wider text-emerald-400 mb-4">Demographic Registry</h3>
-                    </div>
-                    <div>
-                        <label class="block text-xs uppercase font-bold text-slate-400 mb-2">LGA</label>
-                        <select name="lga" required class="w-full bg-slate-900 border border-slate-800 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500">
-                            <option value="" disabled selected>Select LGA</option>
-                            {#each sokotoLgas as lga}
-                                <option value={lga}>{lga}</option>
-                            {/each}
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-xs uppercase font-bold text-slate-400 mb-2">Town / Settlement</label>
-                        <input type="text" name="town" required class="w-full bg-slate-900 border border-slate-800 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500" />
-                    </div>
-                    <div class="md:col-span-2">
-                        <label class="block text-xs uppercase font-bold text-slate-400 mb-2">Ward</label>
-                        <input type="text" name="ward" required class="w-full bg-slate-900 border border-slate-800 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500" />
-                    </div>
-                    <div class="md:col-span-2 flex justify-end pt-4">
-                        <button type="submit" disabled={isSubmitting} class="w-full md:w-auto bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-bold px-8 py-3 rounded-lg transition disabled:opacity-50">
-                            {isSubmitting ? 'Processing...' : 'Register Profile & Compile Token'}
-                        </button>
-                    </div>
-                </form>
-            </section>
-        {/if} -->
     </div>
 </main>
