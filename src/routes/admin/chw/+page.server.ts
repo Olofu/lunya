@@ -7,21 +7,22 @@ export const actions: Actions = {
 
     createChw: async ({ request, fetch }) => {
         const formData = await request.formData();
+  
   const chwPayload = {
-    active: "True",
     first_name: formData.get('first_name')?.toString() || '',
     last_name: formData.get('last_name')?.toString() || '',
     middle_name: formData.get('middle_name')?.toString() || null,
     designation: formData.get('designation')?.toString() || '',
     rank: formData.get('rank')?.toString() || '',
     department: formData.get('department')?.toString() || '',
-    state: formData.get('state')?.toString() || '',   // use "state" not "stated"
+    state: formData.get('state')?.toString() || '',
     lga: formData.get('lga')?.toString() || '',
     town: formData.get('town')?.toString() || '',
     ward: formData.get('ward')?.toString() || '',
-    facility_lga: formData.get('facility_lga')?.toString() || '', // replaces hospital
+    facility_lga: formData.get('facility_lga')?.toString() || '',
     contact_phone: formData.get('contact_phone')?.toString() || '',
-    userid: "" // backend generates this
+    active: true // boolean, not string
+    // userid and password_hash are generated in backend, so omit them
 };
 
 /*      
