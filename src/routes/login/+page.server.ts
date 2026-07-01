@@ -2,9 +2,7 @@ import { fail, redirect } from '@sveltejs/kit';
 import type { Actions } from './$types';
 
 const API_BASE_URL = 'https://api.megaflips.com/api/v1';
-
-// Point this to your Rust backend
-//const API_BASE_URL = 'http://127.0.0.1:8080/api/v1';
+// For local dev, swap to: const API_BASE_URL = 'http://127.0.0.1:8080/api/v1';
 
 export const actions: Actions = {
     login: async ({ request, cookies, fetch }) => {
@@ -15,6 +13,9 @@ export const actions: Actions = {
         if (!username || !password) {
             return fail(400, { message: 'Missing operator credentials.' });
         }
+
+        // global-ish variable to hold redirect target
+        let redirectTarget: string | null = null;
 
         try {
             const res = await fetch(`${API_BASE_URL}/admin/login`, {
@@ -45,12 +46,20 @@ export const actions: Actions = {
                 maxAge: 43200
             });
 
-            // Redirect based on role
-            throw redirect(303, body.role === 'admin' ? '/admin/dashboard' : '/chw/register');
+            // Instead of throwing here, set redirect target
+            redirectTarget = body.role === 'admin' ? '/admin/dashboard' : '/chw/register';
 
         } catch (err) {
             console.error('Auth error:', err);
             return fail(500, { message: 'Afiya core node verification gateway timeout.' });
         }
+
+        // Perform redirect outside try/catch
+        if (redirectTarget) {
+            throw redirect(303, redirectTarget);
+        }
+
+        // Fallback if something unexpected happens
+        return fail(500, { message: 'Unknown login state.' });
     }
 };
