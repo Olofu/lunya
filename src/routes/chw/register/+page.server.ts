@@ -11,20 +11,21 @@ export const actions: Actions = {
     const rawPhone = formData.get('phone') as string;
 
     // build payload
-    const patientPayload = {
-      phone_hash: rawPhone,
-      phone: formData.get('phone'), // or compute hash here if needed
-      full_name: formData.get('full_name'),
-      age: parseInt(formData.get('age') as string, 10),
-      photo: formData.get('photo') || null,
-      state: 'Sokoto',
-      language: formData.get('language') || null, 
-      lga: formData.get('lga'),
-      town: formData.get('town'),
-      ward: formData.get('ward'),
-      // attach CHW id from session/JWT
-      chw_id: locals.user?.userid || 'CHW_SOK_1',
-    };
+  const patientPayload = {
+  secret_id: null,           // Backend generates this
+  phone_hash: null,          // Backend generates this
+  id: "temp",                // Required by your Rust struct
+  phone: formData.get('phone'),
+  full_name: formData.get('full_name'),
+  age: parseInt(formData.get('age') as string, 10),
+  photo: formData.get('photo') || null,
+  state: 'Sokoto',
+  language: formData.get('language') || null, 
+  lga: formData.get('lga'),
+  town: formData.get('town'),
+  ward: formData.get('ward'),
+  chw_id: locals.user?.userid || 'CHW_SOK_1',
+};
 
     try {
       const res = await fetch(`${API_BASE_URL}/chw/register`, {
