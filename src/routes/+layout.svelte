@@ -18,7 +18,8 @@
         {#if role === 'admin'}
             <a href="/admin/dashboard" class="text-emerald-400">Dashboard</a>
         {:else if role === 'chw'}
-            <a href="/chw/register" class="text-emerald-400">Register Mother</a>
+            <a href="/chw/register" class="text-emerald-400">Register Mother</a> 
+              <a href="/chw/view-register" class="text-emerald-400">Viewr Mother</a>
         {/if}
         
         <form method="POST" action="/login?/logout">

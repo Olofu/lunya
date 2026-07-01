@@ -45,6 +45,14 @@ export const actions: Actions = {
                 sameSite: 'strict',
                 maxAge: 43200
             });
+             cookies.set('user_id', body.user_id, {
+                path: '/',
+                httpOnly: true,
+                secure: true,
+                sameSite: 'strict',
+                maxAge: 43200
+            });
+
 
             // Instead of throwing here, set redirect target
            // redirectTarget = body.role === 'admin' ? '/admin/dashboard' : '/chw/register';
