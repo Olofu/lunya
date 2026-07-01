@@ -8,6 +8,7 @@ export const actions: Actions = {
     createChw: async ({ request, fetch }) => {
         const formData = await request.formData();
   const chwPayload = {
+    active: "True",
     first_name: formData.get('first_name')?.toString() || '',
     last_name: formData.get('last_name')?.toString() || '',
     middle_name: formData.get('middle_name')?.toString() || null,
