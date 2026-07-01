@@ -16,10 +16,10 @@
         <span class="text-slate-500 mr-auto">Role: {role.toUpperCase()}</span>
         
         {#if role === 'admin'}
-            <a href="/admin/dashboard" class="text-emerald-400">Dashboard</a>
-        {:else if role === 'chw'}
-            <a href="/chw/register" class="text-emerald-400">Register Mother</a> 
-              <a href="/chw/view-register" class="text-emerald-400">Viewr Mother</a>
+            <a href="/admin/chw" class="text-emerald-400">Register CHEW</a>
+        {:else if role === 'chew'}
+            <a href="/chw/register" class="text-emerald-400">Register a Mother</a> 
+              <a href="/chw/view-register" class="text-emerald-400">View Mothers</a>
         {/if}
         
         <form method="POST" action="/login?/logout">
