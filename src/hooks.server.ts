@@ -53,7 +53,7 @@ export async function handle({ event, resolve }) {
 
     // 3. ROLE-BASED ACCESS CONTROL (RBAC)
     // Prevent Admins from accessing CHW pages
-    if (url.pathname.startsWith('/chw') && userRole !== 'chw') {
+    if (url.pathname.startsWith('/chw') && userRole !== 'chew') {
         throw redirect(303, '/admin/dashboard');
     }
 

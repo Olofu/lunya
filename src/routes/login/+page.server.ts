@@ -56,7 +56,7 @@ if (body.role === 'admin') {
     redirectTarget = '/chw/register';
 } else {
     // fallback for other roles
-    redirectTarget = '/';
+    redirectTarget = '/login';
 }
 
         } catch (err) {
