@@ -22,7 +22,7 @@ export const actions: Actions = {
       town: formData.get('town'),
       ward: formData.get('ward'),
       // attach CHW id from session/JWT
-      chw_id: locals.user?.userid || '',
+      chw_id: locals.user?.userid || 'CHW_SOK_1',
     };
 
     try {
