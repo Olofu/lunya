@@ -30,9 +30,9 @@
 
     <div class="max-w-6xl mx-auto p-6 lg:p-8">
         <div class="flex border-b border-slate-800 mb-8 space-x-4">
-            <button class="pb-3 text-sm font-semibold uppercase {activeTab === 'chw' ? 'text-emerald-400 border-b-2 border-emerald-400' : 'text-slate-400'}" onclick={() => activeTab = 'chw'}>
+          <!--  <button class="pb-3 text-sm font-semibold uppercase {activeTab === 'chw' ? 'text-emerald-400 border-b-2 border-emerald-400' : 'text-slate-400'}" onclick={() => activeTab = 'chw'}>
                 Provision CHW Operator
-            </button>
+            </button>-->
             <button class="pb-3 text-sm font-semibold uppercase {activeTab === 'patients' ? 'text-emerald-400 border-b-2 border-emerald-400' : 'text-slate-400'}" onclick={() => activeTab = 'patients'}>
                 Register Mother Registry
             </button>

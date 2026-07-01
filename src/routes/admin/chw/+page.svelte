@@ -33,9 +33,9 @@
             <button class="pb-3 text-sm font-semibold uppercase {activeTab === 'chw' ? 'text-emerald-400 border-b-2 border-emerald-400' : 'text-slate-400'}" onclick={() => activeTab = 'chw'}>
                 Provision CHW Operator
             </button>
-            <button class="pb-3 text-sm font-semibold uppercase {activeTab === 'patients' ? 'text-emerald-400 border-b-2 border-emerald-400' : 'text-slate-400'}" onclick={() => activeTab = 'patients'}>
+          <!--  <button class="pb-3 text-sm font-semibold uppercase {activeTab === 'patients' ? 'text-emerald-400 border-b-2 border-emerald-400' : 'text-slate-400'}" onclick={() => activeTab = 'patients'}>
                 Register Mother Registry
-            </button>
+            </button> -->
         </div>
 
         {#if form?.message}
